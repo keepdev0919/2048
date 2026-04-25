@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">2048</h1>
+      <div class="scores-container">
+        <div class="score-container" id="score-container">
+          <div class="score-label">SCORE</div>
+          <div class="score-value" id="score">0</div>
+        </div>
+        <div class="best-container">
+          <div class="score-label">BEST</div>
+          <div class="score-value" id="best-score">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="above-game">
+      <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+      <button class="restart-button" id="btn-new">New Game</button>
+    </div>
+
+    <div class="game-container">
+      <div class="game-message hidden" id="game-message">
+        <p id="message-text"></p>
+        <div class="lower">
+          <button class="keep-playing-button hidden" id="btn-continue">Keep going</button>
+          <button class="retry-button" id="btn-retry">Try again</button>
+        </div>
+      </div>
+      <div class="grid-container" id="board-grid"></div>
+      <div class="tile-container" id="tile-container"></div>
+    </div>
+
+    <p class="game-explanation">
+      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles.
+      Tiles with the same number <strong>merge into one</strong> when they touch.
+      Add them up to reach <strong>2048!</strong>
+    </p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
