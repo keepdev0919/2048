@@ -225,11 +225,19 @@ body {
   100% { transform: scale(1); }
 }
 
-/* ─── Tile Number Colors ──────────────────────────────────────── */
-.tile[data-value="1024"],
-.tile[data-value="2048"] { color: #ffd60a; }
-.tile[data-value="2048"] { box-shadow: 0 0 16px rgba(255, 214, 10, 0.8); }
-.tile.tile-super         { color: #ff6b35; }
+/* ─── Special Tile Backgrounds ───────────────────────────────── */
+.tile[data-value="1024"] {
+  background-image: url('vp.jpg');
+  color: #ffd60a;
+  text-shadow: 0 1px 6px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,0.9);
+}
+.tile[data-value="2048"] {
+  background-image: url('president.jpg');
+  color: #ffd60a;
+  text-shadow: 0 1px 6px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,0.9);
+  box-shadow: 0 0 20px rgba(255, 214, 10, 0.9);
+}
+.tile.tile-super { color: #ff6b35; }
 
 /* ─── Game Message Overlay ───────────────────────────────────── */
 .game-message {

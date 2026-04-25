@@ -1,4 +1,4 @@
-const CACHE = '2048-v1';
+const CACHE = '2048-v2';
 const STATIC = [
   './',
   './index.html',
@@ -6,6 +6,9 @@ const STATIC = [
   './game.js',
   './manifest.json',
   './icon.png',
+  './hero.jpg',
+  './vp.jpg',
+  './president.jpg',
 ];
 
 self.addEventListener('install', e => {
