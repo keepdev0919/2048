@@ -4,10 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2048</title>
+  <meta name="theme-color" content="#bbada0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="2048" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
   <div class="container">
+    <div class="nickname-overlay" id="nickname-overlay">
+      <div class="nickname-modal">
+        <h2 class="nickname-title">Enter your name</h2>
+        <input
+          type="text"
+          id="nickname-input"
+          class="nickname-input"
+          maxlength="20"
+          placeholder="Your name"
+          autocomplete="off"
+        />
+        <button class="restart-button" id="nickname-submit">Start Game</button>
+      </div>
+    </div>
     <div class="heading">
       <h1 class="title">2048</h1>
       <div class="scores-container">
@@ -25,6 +47,7 @@
     <div class="above-game">
       <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
       <button class="restart-button" id="btn-new">New Game</button>
+      <button class="share-button" id="btn-share">Share</button>
     </div>
 
     <div class="game-container">
@@ -44,6 +67,21 @@
       Tiles with the same number <strong>merge into one</strong> when they touch.
       Add them up to reach <strong>2048!</strong>
     </p>
+    <div class="leaderboard">
+      <h2 class="leaderboard-title">Leaderboard</h2>
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th class="col-rank">#</th>
+            <th class="col-name">Name</th>
+            <th class="col-score">Score</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+          <tr><td colspan="3" class="leaderboard-loading">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script src="game.js"></script>
