@@ -231,23 +231,25 @@ body {
 .tile[data-value="8"]    { border: 3px solid #f4a261; }
 .tile[data-value="16"]   { border: 3px solid #e63946; }
 .tile[data-value="32"]   { border: 3px solid #ff69b4; }
-.tile[data-value="64"]   { border: 3px solid #c77dff; }
-.tile[data-value="128"]  { border: 3px solid #7b2d8b; }
-.tile[data-value="256"]  { border: 3px solid #0096c7; }
-.tile[data-value="512"]  { border: 3px solid #2dc653; }
 
 /* ─── Special Tile Backgrounds ───────────────────────────────── */
-.tile[data-value="1024"] {
+.tile[data-value="64"],
+.tile[data-value="128"] {
   background-image: url('vp.jpg');
-  border: 4px solid #ffd60a;
-  color: #ffd60a;
+  border: 4px solid #c77dff;
+  color: #ffffff;
   text-shadow: 0 1px 6px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,0.9);
 }
+.tile[data-value="256"],
+.tile[data-value="512"],
+.tile[data-value="1024"],
 .tile[data-value="2048"] {
   background-image: url('president.jpg');
   border: 4px solid #ffd60a;
   color: #ffd60a;
   text-shadow: 0 1px 6px rgba(0,0,0,1), 0 0 12px rgba(0,0,0,0.9);
+}
+.tile[data-value="2048"] {
   box-shadow: 0 0 20px rgba(255, 214, 10, 0.9);
 }
 .tile.tile-super { color: #ff6b35; border: 4px solid #ff6b35; }
