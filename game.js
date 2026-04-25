@@ -7,6 +7,13 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const GRID_SIZE = 4;
 const WIN_TILE  = 2048;
 
+// ── Character Theme ───────────────────────────────────────────
+const TILE_EMOJI = {
+  2: '🥚', 4: '🐣', 8: '🐥', 16: '🐔',
+  32: '🦊', 64: '🐺', 128: '🦁', 256: '🐲',
+  512: '🔥', 1024: '⚡', 2048: '👑',
+};
+
 // ── State ─────────────────────────────────────────────────────
 let grid             = [];
 let score            = 0;
@@ -216,7 +223,8 @@ function renderAll() {
       el.style.height  = cellPx + 'px';
       el.style.left    = left + 'px';
       el.style.top     = top  + 'px';
-      el.textContent   = tile.value;
+      const emoji = TILE_EMOJI[tile.value] || '🌟';
+      el.innerHTML = `<span class="tile-emoji">${emoji}</span><span class="tile-num">${tile.value}</span>`;
       el.dataset.value = tile.value;
 
       el.classList.remove('is-new', 'is-merged', 'tile-super');
