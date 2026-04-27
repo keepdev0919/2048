@@ -382,6 +382,76 @@ body {
   .game-explanation { font-size: 14px; }
 }
 
+/* ─── Boss Cutscene ──────────────────────────────────────── */
+.boss-cutscene {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  pointer-events: none;
+  animation: boss-bg-in 0.25s ease forwards;
+}
+
+.boss-cutscene.hidden { display: none; }
+
+.boss-cutscene.hiding {
+  animation: boss-bg-out 0.4s ease forwards;
+}
+
+@keyframes boss-bg-in {
+  from { background: rgba(0,0,0,0); }
+  to   { background: rgba(0,0,0,0.75); }
+}
+
+@keyframes boss-bg-out {
+  from { background: rgba(0,0,0,0.75); }
+  to   { background: rgba(0,0,0,0); }
+}
+
+.boss-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: boss-pop-in 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.4) forwards;
+}
+
+.boss-cutscene.hiding .boss-inner {
+  animation: boss-pop-out 0.35s ease forwards;
+}
+
+@keyframes boss-pop-in {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+@keyframes boss-pop-out {
+  from { transform: scale(1);   opacity: 1; }
+  to   { transform: scale(1.1); opacity: 0; }
+}
+
+.boss-photo {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 16px;
+  box-shadow: 0 0 0 4px #ffd60a, 0 0 40px rgba(255, 214, 10, 0.6);
+}
+
+.boss-text {
+  font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffd60a;
+  text-shadow: 0 2px 16px rgba(255, 214, 10, 0.8), 0 0 40px rgba(255,214,10,0.4);
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 /* ─── Nickname Modal ──────────────────────────────────────── */
 .nickname-overlay {
   position: fixed;

@@ -31,6 +31,9 @@ const nicknameOverlay  = document.getElementById('nickname-overlay');
 const nicknameInput    = document.getElementById('nickname-input');
 const nicknameSubmit   = document.getElementById('nickname-submit');
 const leaderboardBody  = document.getElementById('leaderboard-body');
+const bossCutscene     = document.getElementById('boss-cutscene');
+const bossPhoto        = document.getElementById('boss-photo');
+const bossText         = document.getElementById('boss-text');
 
 // ── Utils ─────────────────────────────────────────────────────
 function escapeHtml(str) {
@@ -39,6 +42,28 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+// ── Boss Cutscene ─────────────────────────────────────────────
+const BOSS_SHOWN = new Set();
+
+function showBossCutscene(value) {
+  if (BOSS_SHOWN.has(value)) return;
+  BOSS_SHOWN.add(value);
+
+  const isPresident = value >= 256;
+  bossPhoto.src = isPresident ? './president.jpg' : './vp.jpg';
+  bossText.textContent = isPresident ? '👑 회장님 등장!' : '🎖️ 부회장님 등장!';
+
+  bossCutscene.classList.remove('hidden', 'hiding');
+
+  setTimeout(() => {
+    bossCutscene.classList.add('hiding');
+    bossCutscene.addEventListener('animationend', () => {
+      bossCutscene.classList.add('hidden');
+      bossCutscene.classList.remove('hiding');
+    }, { once: true });
+  }, 1200);
 }
 
 function showToast(msg) {
@@ -145,6 +170,7 @@ function newGame() {
   grid             = Array.from({ length: GRID_SIZE }, () => Array(GRID_SIZE).fill(null));
   score            = 0;
   continueAfterWin = false;
+  BOSS_SHOWN.clear();
 
   updateScore(0);
   hideMessage();
@@ -288,6 +314,13 @@ function makeMove(dir) {
   setTimeout(() => {
     addRandomTile();
     renderAll();
+
+    // 보스 등장 체크
+    for (let r = 0; r < GRID_SIZE; r++)
+      for (let c = 0; c < GRID_SIZE; c++) {
+        const v = grid[r][c]?.value;
+        if (v === 64 || v === 256) showBossCutscene(v);
+      }
 
     if (!continueAfterWin) {
       for (let r = 0; r < GRID_SIZE; r++)
