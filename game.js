@@ -100,14 +100,14 @@ async function fetchLeaderboard() {
   try {
     const { data, error } = await db
       .from('leaderboard')
-      .select('nickname, best_score')
+      .select('nickname, best_score, updated_at')
       .order('best_score', { ascending: false })
       .limit(10);
     if (error) throw error;
     renderLeaderboard(data);
   } catch {
     leaderboardBody.innerHTML =
-      '<tr><td colspan="3" class="leaderboard-empty">리더보드를 불러올 수 없습니다</td></tr>';
+      '<tr><td colspan="4" class="leaderboard-empty">리더보드를 불러올 수 없습니다</td></tr>';
   }
 }
 
@@ -115,16 +115,23 @@ function renderLeaderboard(rows) {
   const myName = localStorage.getItem('2048-nickname');
   if (!rows || !rows.length) {
     leaderboardBody.innerHTML =
-      '<tr><td colspan="3" class="leaderboard-empty">아직 기록이 없습니다</td></tr>';
+      '<tr><td colspan="4" class="leaderboard-empty">아직 기록이 없습니다</td></tr>';
     return;
   }
-  leaderboardBody.innerHTML = rows.map((row, i) => `
+  leaderboardBody.innerHTML = rows.map((row, i) => {
+    const d = row.updated_at ? new Date(row.updated_at) : null;
+    const dateStr = d
+      ? `${d.getMonth() + 1}/${d.getDate()}`
+      : '—';
+    return `
     <tr class="${row.nickname === myName ? 'leaderboard-me' : ''}">
       <td class="col-rank">${i + 1}</td>
       <td>${escapeHtml(row.nickname)}</td>
       <td class="col-score">${row.best_score.toLocaleString()}</td>
+      <td class="col-date">${dateStr}</td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 async function submitScore(finalScore) {

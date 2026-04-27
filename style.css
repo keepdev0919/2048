@@ -598,6 +598,13 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+.col-date {
+  text-align: center;
+  font-size: 11px;
+  color: #a09990;
+  white-space: nowrap;
+}
+
 /* 1위 점수 강조 */
 .leaderboard-table tbody tr:nth-child(1) .col-score { color: #c9a227 !important; }
 
