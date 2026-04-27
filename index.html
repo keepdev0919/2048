@@ -15,72 +15,87 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="nickname-overlay" id="nickname-overlay">
-      <div class="nickname-modal">
-        <h2 class="nickname-title">Enter your name</h2>
-        <input
-          type="text"
-          id="nickname-input"
-          class="nickname-input"
-          maxlength="20"
-          placeholder="Your name"
-          autocomplete="off"
-        />
-        <button class="restart-button" id="nickname-submit">Start Game</button>
-      </div>
+  <div class="nickname-overlay" id="nickname-overlay">
+    <div class="nickname-modal">
+      <h2 class="nickname-title">닉네임을 입력하세요</h2>
+      <input
+        type="text"
+        id="nickname-input"
+        class="nickname-input"
+        maxlength="20"
+        placeholder="닉네임"
+        autocomplete="off"
+      />
+      <button class="restart-button" id="nickname-submit">게임 시작</button>
     </div>
-    <div class="heading">
-      <h1 class="title">2048</h1>
-      <div class="scores-container">
-        <div class="score-container" id="score-container">
-          <div class="score-label">SCORE</div>
-          <div class="score-value" id="score">0</div>
-        </div>
-        <div class="best-container">
-          <div class="score-label">BEST</div>
-          <div class="score-value" id="best-score">0</div>
-        </div>
-      </div>
-    </div>
+  </div>
 
-    <div class="above-game">
-      <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
-      <button class="restart-button" id="btn-new">New Game</button>
-      <button class="share-button" id="btn-share">Share</button>
-    </div>
-
-    <div class="game-container">
-      <div class="game-message hidden" id="game-message">
-        <p id="message-text"></p>
-        <div class="lower">
-          <button class="keep-playing-button hidden" id="btn-continue">Keep going</button>
-          <button class="retry-button" id="btn-retry">Try again</button>
+  <div class="page-layout">
+    <!-- 좌측: 게임 영역 -->
+    <div class="container">
+      <div class="heading">
+        <h1 class="title">2048</h1>
+        <div class="scores-container">
+          <div class="score-container" id="score-container">
+            <div class="score-label">점수</div>
+            <div class="score-value" id="score">0</div>
+          </div>
+          <div class="best-container">
+            <div class="score-label">최고</div>
+            <div class="score-value" id="best-score">0</div>
+          </div>
         </div>
       </div>
-      <div class="grid-container" id="board-grid"></div>
-      <div class="tile-container" id="tile-container"></div>
+
+      <div class="above-game">
+        <p class="game-intro">숫자를 합쳐서 <strong>2048</strong>을 만들어보세요!</p>
+        <button class="restart-button" id="btn-new">새 게임</button>
+        <button class="share-button" id="btn-share">공유</button>
+      </div>
+
+      <div class="game-container">
+        <div class="game-message hidden" id="game-message">
+          <p id="message-text"></p>
+          <div class="lower">
+            <button class="keep-playing-button hidden" id="btn-continue">계속하기</button>
+            <button class="retry-button" id="btn-retry">다시하기</button>
+          </div>
+        </div>
+        <div class="grid-container" id="board-grid"></div>
+        <div class="tile-container" id="tile-container"></div>
+      </div>
+
+      <p class="game-explanation">
+        <strong class="important">게임 방법:</strong> <strong>방향키</strong>로 타일을 움직이세요.
+        같은 숫자의 타일이 닿으면 <strong>합쳐집니다.</strong>
+        <strong>2048</strong>을 만들면 승리!
+      </p>
     </div>
 
-    <p class="game-explanation">
-      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles.
-      Tiles with the same number <strong>merge into one</strong> when they touch.
-      Add them up to reach <strong>2048!</strong>
-    </p>
-    <div class="leaderboard">
-      <h2 class="leaderboard-title">Leaderboard</h2>
-      <table class="leaderboard-table">
-        <thead>
-          <tr>
-            <th class="col-rank">#</th>
-            <th class="col-name">Name</th>
-            <th class="col-score">Score</th>
-          </tr>
-        </thead>
-        <tbody id="leaderboard-body">
-          <tr><td colspan="3" class="leaderboard-loading">Loading...</td></tr>
-        </tbody>
-      </table>
+    <!-- 우측: 리더보드 -->
+    <div class="leaderboard-panel">
+      <div class="leaderboard-header">
+        <span class="leaderboard-crown">👑</span>
+        <h2 class="leaderboard-title">랭킹</h2>
+        <span class="leaderboard-badge">SOPT 36기</span>
+      </div>
+      <div class="leaderboard-body-wrap">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th class="col-rank">순위</th>
+              <th class="col-name">닉네임</th>
+              <th class="col-score">점수</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <tr><td colspan="3" class="leaderboard-loading">불러오는 중...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="leaderboard-footer">
+        게임 오버 시 자동으로 점수가 등록돼요
+      </div>
     </div>
   </div>
 

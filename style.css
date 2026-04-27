@@ -16,11 +16,21 @@ body {
   padding: 0;
 }
 
+/* ─── Page Layout (2단: 게임 + 리더보드) ──────────────────────── */
+.page-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
 /* ─── Container ─────────────────────────────────────────────── */
 .container {
   width: 500px;
-  margin: 0 auto;
-  padding: 40px 0 80px;
+  flex-shrink: 0;
+  padding: 0;
 }
 
 /* ─── Heading ───────────────────────────────────────────────── */
@@ -321,6 +331,21 @@ body {
 .game-explanation .important { text-transform: uppercase; }
 
 /* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .page-layout {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15px 60px;
+    gap: 24px;
+  }
+
+  .leaderboard-panel {
+    width: 100%;
+    max-width: 500px;
+    position: static;
+  }
+}
+
 @media (max-width: 540px) {
   :root {
     --board-size: min(92vw, 500px);
@@ -329,7 +354,7 @@ body {
 
   .container {
     width: 100%;
-    padding: 20px 15px 60px;
+    padding: 0;
   }
 
   .game-container {
@@ -402,71 +427,135 @@ body {
 
 .nickname-input:focus { border-color: #8f7a66; }
 
-/* ─── Leaderboard ────────────────────────────────────────── */
-.leaderboard {
-  margin-top: 20px;
-  background: #fff;
-  border-radius: 6px;
+/* ─── Leaderboard Panel (우측 사이드) ────────────────────────── */
+.leaderboard-panel {
+  flex: 1;
+  min-width: 240px;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.06);
+  position: sticky;
+  top: 40px;
+}
+
+.leaderboard-header {
+  padding: 20px 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+}
+
+.leaderboard-crown {
+  font-size: 22px;
+  line-height: 1;
 }
 
 .leaderboard-title {
-  background: #bbada0;
-  color: #f9f6f2;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
-  text-transform: uppercase;
+  color: #ffd60a;
   letter-spacing: 1px;
-  padding: 12px 16px;
   margin: 0;
+  flex: 1;
+}
+
+.leaderboard-badge {
+  font-size: 11px;
+  font-weight: bold;
+  color: #a0c4ff;
+  background: rgba(160, 196, 255, 0.12);
+  border: 1px solid rgba(160, 196, 255, 0.25);
+  border-radius: 20px;
+  padding: 3px 10px;
+  letter-spacing: 0.5px;
+}
+
+.leaderboard-body-wrap {
+  padding: 8px 0;
 }
 
 .leaderboard-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .leaderboard-table thead th {
-  background: #f5f0eb;
-  color: #bbada0;
-  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  font-size: 11px;
   font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 8px 16px;
+  letter-spacing: 0.8px;
+  padding: 6px 18px;
   text-align: left;
+  text-transform: uppercase;
 }
 
 .leaderboard-table tbody tr {
-  border-bottom: 1px solid #f0ebe4;
+  transition: background 0.15s;
 }
 
-.leaderboard-table tbody tr:last-child { border-bottom: none; }
+.leaderboard-table tbody tr:hover {
+  background: rgba(255,255,255,0.04);
+}
 
 .leaderboard-table tbody td {
-  padding: 10px 16px;
-  color: #776e65;
+  padding: 11px 18px;
+  color: rgba(255,255,255,0.75);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-.col-rank  { width: 40px; }
-.col-score { text-align: right; font-weight: bold; color: #776e65; }
+.leaderboard-table tbody tr:last-child td { border-bottom: none; }
 
-.leaderboard-table tbody tr.leaderboard-me {
-  background: #faf0d7;
-}
-
-.leaderboard-table tbody tr.leaderboard-me td {
+.col-rank {
+  width: 36px;
   font-weight: bold;
+  color: rgba(255,255,255,0.35) !important;
+  font-size: 12px;
+}
+
+/* 1~3위 순위 색상 */
+.leaderboard-table tbody tr:nth-child(1) .col-rank { color: #ffd60a !important; font-size: 15px; }
+.leaderboard-table tbody tr:nth-child(2) .col-rank { color: #c0c0c0 !important; font-size: 14px; }
+.leaderboard-table tbody tr:nth-child(3) .col-rank { color: #cd7f32 !important; font-size: 13px; }
+
+.col-score {
+  text-align: right;
+  font-weight: bold;
+  color: #ffd60a !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* 내 순위 강조 */
+.leaderboard-table tbody tr.leaderboard-me td {
+  background: rgba(255, 214, 10, 0.08);
+  color: #ffd60a !important;
+  font-weight: bold;
+}
+
+.leaderboard-table tbody tr.leaderboard-me .col-rank {
+  color: #ffd60a !important;
 }
 
 .leaderboard-loading,
 .leaderboard-empty {
   text-align: center;
-  color: #bbada0;
-  padding: 20px !important;
+  color: rgba(255,255,255,0.3) !important;
+  padding: 28px !important;
   font-style: italic;
+  font-size: 13px;
+}
+
+.leaderboard-footer {
+  padding: 12px 18px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.1);
 }
 
 /* ─── Toast ──────────────────────────────────────────────── */
