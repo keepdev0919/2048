@@ -33,7 +33,7 @@
 
   <div class="nickname-overlay" id="nickname-overlay">
     <div class="nickname-modal">
-      <h2 class="nickname-title">닉네임을 입력하세요</h2>
+      <h2 class="nickname-title" id="nickname-title">닉네임을 입력하세요</h2>
       <input
         type="text"
         id="nickname-input"
@@ -42,7 +42,10 @@
         placeholder="닉네임"
         autocomplete="off"
       />
-      <button class="restart-button" id="nickname-submit">게임 시작</button>
+      <div class="nickname-buttons">
+        <button class="restart-button nickname-cancel hidden" id="nickname-cancel">취소</button>
+        <button class="restart-button" id="nickname-submit">게임 시작</button>
+      </div>
     </div>
   </div>
 
@@ -61,6 +64,12 @@
             <div class="score-value" id="best-score">0</div>
           </div>
         </div>
+      </div>
+
+      <div class="player-info">
+        <span class="player-info-icon">👤</span>
+        <span class="player-info-name" id="player-name">—</span>
+        <button class="player-info-edit" id="btn-edit-nickname" type="button">변경</button>
       </div>
 
       <div class="above-game">

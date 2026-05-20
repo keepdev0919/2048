@@ -127,24 +127,82 @@ function showToast(msg) {
 }
 
 // ── Nickname ──────────────────────────────────────────────────
+const nicknameTitle  = document.getElementById('nickname-title');
+const nicknameCancel = document.getElementById('nickname-cancel');
+const playerName     = document.getElementById('player-name');
+const btnEditNickname = document.getElementById('btn-edit-nickname');
+
+function updatePlayerInfo() {
+  const name = localStorage.getItem('2048-nickname') || '—';
+  playerName.textContent = name;
+}
+
 function initNickname() {
   const saved = localStorage.getItem('2048-nickname');
   if (saved) {
     nicknameOverlay.classList.add('hidden');
   } else {
+    nicknameOverlay.dataset.mode = 'first';
+    nicknameTitle.textContent = '닉네임을 입력하세요';
+    nicknameSubmit.textContent = '게임 시작';
+    nicknameCancel.classList.add('hidden');
+    nicknameInput.value = '';
     nicknameOverlay.classList.remove('hidden');
     nicknameInput.focus();
   }
+  updatePlayerInfo();
 }
 
-function saveNickname() {
+function openNicknameEdit() {
+  const current = localStorage.getItem('2048-nickname') || '';
+  nicknameOverlay.dataset.mode = 'edit';
+  nicknameTitle.textContent = '닉네임 변경';
+  nicknameSubmit.textContent = '저장';
+  nicknameCancel.classList.remove('hidden');
+  nicknameInput.value = current;
+  nicknameOverlay.classList.remove('hidden');
+  nicknameInput.focus();
+  nicknameInput.select();
+}
+
+function closeNicknameModal() {
+  nicknameOverlay.classList.add('hidden');
+}
+
+async function saveNickname() {
   const name = nicknameInput.value.trim();
   if (!name) {
     nicknameInput.focus();
     return;
   }
+  const old = localStorage.getItem('2048-nickname');
+
+  // 변경 모드 + 실제로 이름이 바뀐 경우: DB의 기존 row를 새 닉네임으로 이전
+  if (old && old !== name) {
+    try {
+      const { data: existing } = await db
+        .from('leaderboard')
+        .select('nickname')
+        .eq('nickname', name)
+        .maybeSingle();
+      if (existing) {
+        showToast('이미 존재하는 닉네임이에요');
+        nicknameInput.focus();
+        return;
+      }
+      await db
+        .from('leaderboard')
+        .update({ nickname: name, updated_at: new Date().toISOString() })
+        .eq('nickname', old);
+    } catch {
+      // DB 실패해도 로컬 변경은 진행
+    }
+  }
+
   localStorage.setItem('2048-nickname', name);
-  nicknameOverlay.classList.add('hidden');
+  closeNicknameModal();
+  updatePlayerInfo();
+  fetchLeaderboard();
 }
 
 // ── Leaderboard ───────────────────────────────────────────────
@@ -494,7 +552,10 @@ function attachInputs() {
   nicknameSubmit.addEventListener('click', saveNickname);
   nicknameInput.addEventListener('keydown', e => {
     if (e.key === 'Enter') saveNickname();
+    if (e.key === 'Escape' && nicknameOverlay.dataset.mode === 'edit') closeNicknameModal();
   });
+  nicknameCancel.addEventListener('click', closeNicknameModal);
+  btnEditNickname.addEventListener('click', openNicknameEdit);
   btnShare.addEventListener('click', () => {
     navigator.clipboard.writeText(location.href)
       .then(() => showToast('링크가 복사됐어요! 🎉'))
