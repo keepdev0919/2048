@@ -1,4 +1,4 @@
-const CACHE = '2048-v7';
+const CACHE = '2048-v8';
 const STATIC = [
   './',
   './index.html',
