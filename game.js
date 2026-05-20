@@ -7,6 +7,52 @@ const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const GRID_SIZE = 4;
 const WIN_TILE  = 2048;
 
+// ── Theme (인간 / 오니) ─────────────────────────────────────────
+const THEME_DATA = {
+  human: {
+    label: '인간',
+    names: ['탄지로', '이노스케', '젠이츠', '시노부', '텐겐', '렌고쿠', '미츠리', '무이치로', '오바나이', '기유', '사네미', '교메이'],
+    images: ['human-1.jpg', 'human-2.jpg', 'human-3.jpg', 'human-4.jpg', 'human-5.jpg', 'human-6.jpg', 'human-7.jpg', 'human-8.jpg', 'human-9.jpg', 'human-10.jpg', 'human-11.jpg', 'human-12.jpg'],
+    bossEmoji: '⚔️',
+    bossSuffix: '합류!',
+    finalEmoji: '🌅',
+    finalLabel: '암주',
+  },
+  oni: {
+    label: '오니',
+    names: ['스사마루', '루이', '엔무', '카이가쿠', '다키', '굣코', '한텐구', '나키메', '아카자', '도우마', '코쿠시보', '무잔'],
+    images: ['oni-1.png', 'oni-2.webp', 'oni-3.jpg', 'oni-4.jpg', 'oni-5.jpg', 'oni-6.jpg', 'oni-7.jpg', 'oni-8.png', 'oni-9.jpg', 'oni-10.jpg', 'oni-11.jpg', 'oni-12.jpg'],
+    bossEmoji: '👹',
+    bossSuffix: '등장!',
+    finalEmoji: '🩸',
+    finalLabel: '귀왕',
+  },
+};
+
+function getTheme() {
+  const saved = localStorage.getItem('2048-theme');
+  return (saved === 'oni' || saved === 'human') ? saved : 'human';
+}
+
+function applyTheme() {
+  const theme = getTheme();
+  document.body.setAttribute('data-theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('is-active', btn.dataset.theme === theme);
+  });
+}
+
+function setTheme(theme) {
+  if (theme !== 'human' && theme !== 'oni') return;
+  if (getTheme() === theme) return;
+  localStorage.setItem('2048-theme', theme);
+  location.reload();
+}
+
+function valueToIndex(value) {
+  return Math.log2(value) - 1; // 2→0, 4→1, ..., 4096→11
+}
+
 
 // ── State ─────────────────────────────────────────────────────
 let grid             = [];
@@ -51,9 +97,15 @@ function showBossCutscene(value) {
   if (BOSS_SHOWN.has(value)) return;
   BOSS_SHOWN.add(value);
 
-  const isPresident = value >= 256;
-  bossPhoto.src = isPresident ? './tile-256.jpg' : './tile-64.jpg';
-  bossText.textContent = isPresident ? '👹 상현의 도깨비 등장!' : '🎖️ 음주 등장!';
+  const theme = THEME_DATA[getTheme()];
+  const idx = valueToIndex(value);
+  const name = theme.names[idx];
+  const isFinal = value >= 4096;
+
+  bossPhoto.src = `./images/${theme.images[idx]}`;
+  bossText.textContent = isFinal
+    ? `${theme.finalEmoji} 최종 ${theme.finalLabel} ${name}!`
+    : `${theme.bossEmoji} ${name} ${theme.bossSuffix}`;
 
   bossCutscene.classList.remove('hidden', 'hiding');
 
@@ -164,6 +216,7 @@ function registerServiceWorker() {
 
 // ── Init ──────────────────────────────────────────────────────
 function init() {
+  applyTheme();
   buildBoardCells();
   bestScoreEl.textContent = bestScore;
   registerServiceWorker();
@@ -322,11 +375,11 @@ function makeMove(dir) {
     addRandomTile();
     renderAll();
 
-    // 보스 등장 체크
+    // 보스 등장 체크 (64, 256, 4096)
     for (let r = 0; r < GRID_SIZE; r++)
       for (let c = 0; c < GRID_SIZE; c++) {
         const v = grid[r][c]?.value;
-        if (v === 64 || v === 256) showBossCutscene(v);
+        if (v === 64 || v === 256 || v === 4096) showBossCutscene(v);
       }
 
     if (!continueAfterWin) {
@@ -446,6 +499,10 @@ function attachInputs() {
     navigator.clipboard.writeText(location.href)
       .then(() => showToast('링크가 복사됐어요! 🎉'))
       .catch(() => showToast('복사 실패 — 주소창에서 직접 복사해주세요'));
+  });
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTheme(btn.dataset.theme));
   });
 }
 

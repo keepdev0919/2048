@@ -15,6 +15,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 </head>
 <body>
+  <!-- 상단 테마 선택 바 -->
+  <div class="theme-bar">
+    <span class="theme-bar-label">테마</span>
+    <button class="theme-btn" data-theme="human" id="theme-btn-human">⚔️ 인간</button>
+    <button class="theme-btn" data-theme="oni" id="theme-btn-oni">👹 오니</button>
+  </div>
+
   <!-- 보스 등장 컷신 -->
   <div class="boss-cutscene hidden" id="boss-cutscene">
     <div class="boss-inner">
@@ -76,7 +83,7 @@
       <p class="game-explanation">
         <strong class="important">게임 방법:</strong> <strong>방향키</strong>로 타일을 움직이세요.
         같은 숫자의 타일이 닿으면 <strong>합쳐집니다.</strong>
-        <strong>2048</strong>을 만들면 승리!
+        <strong>2048</strong>을 만들고 <strong>4096</strong>까지 도달해 최종 보스를 만나세요!
       </p>
     </div>
 
@@ -85,7 +92,6 @@
       <div class="leaderboard-header">
         <span class="leaderboard-crown">👑</span>
         <h2 class="leaderboard-title">랭킹</h2>
-        <span class="leaderboard-badge">SOPT 38기</span>
       </div>
       <div class="leaderboard-body-wrap">
         <table class="leaderboard-table">

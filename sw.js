@@ -1,4 +1,4 @@
-const CACHE = '2048-v2';
+const CACHE = '2048-v7';
 const STATIC = [
   './',
   './index.html',
@@ -6,9 +6,30 @@ const STATIC = [
   './game.js',
   './manifest.json',
   './icon.png',
-  './hero.jpg',
-  './vp.jpg',
-  './president.jpg',
+  './images/human-1.jpg',
+  './images/human-2.jpg',
+  './images/human-3.jpg',
+  './images/human-4.jpg',
+  './images/human-5.jpg',
+  './images/human-6.jpg',
+  './images/human-7.jpg',
+  './images/human-8.jpg',
+  './images/human-9.jpg',
+  './images/human-10.jpg',
+  './images/human-11.jpg',
+  './images/human-12.jpg',
+  './images/oni-1.png',
+  './images/oni-2.webp',
+  './images/oni-3.jpg',
+  './images/oni-4.jpg',
+  './images/oni-5.jpg',
+  './images/oni-6.jpg',
+  './images/oni-7.jpg',
+  './images/oni-8.png',
+  './images/oni-9.jpg',
+  './images/oni-10.jpg',
+  './images/oni-11.jpg',
+  './images/oni-12.jpg',
 ];
 
 self.addEventListener('install', e => {
