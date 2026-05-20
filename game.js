@@ -99,6 +99,7 @@ function showBossCutscene(value) {
 
   const theme = THEME_DATA[getTheme()];
   const idx = valueToIndex(value);
+  if (idx < 0 || idx >= theme.names.length) return;
   const name = theme.names[idx];
   const isFinal = value >= 4096;
 
@@ -433,11 +434,11 @@ function makeMove(dir) {
     addRandomTile();
     renderAll();
 
-    // 보스 등장 체크 (64, 256, 4096)
+    // 보스 등장 체크 (256 이상 모든 단계)
     for (let r = 0; r < GRID_SIZE; r++)
       for (let c = 0; c < GRID_SIZE; c++) {
         const v = grid[r][c]?.value;
-        if (v === 64 || v === 256 || v === 4096) showBossCutscene(v);
+        if (v >= 256) showBossCutscene(v);
       }
 
     if (!continueAfterWin) {
