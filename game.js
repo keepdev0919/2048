@@ -52,8 +52,8 @@ function showBossCutscene(value) {
   BOSS_SHOWN.add(value);
 
   const isPresident = value >= 256;
-  bossPhoto.src = isPresident ? './president.jpg' : './vp.jpg';
-  bossText.textContent = isPresident ? '👑 회장님 등장!' : '🎖️ 부회장님 등장!';
+  bossPhoto.src = isPresident ? './tile-256.jpg' : './tile-64.jpg';
+  bossText.textContent = isPresident ? '👹 상현의 도깨비 등장!' : '🎖️ 음주 등장!';
 
   bossCutscene.classList.remove('hidden', 'hiding');
 
